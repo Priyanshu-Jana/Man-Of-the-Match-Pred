@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Man of the Match Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Man of the Match Prediction</h1>
+    <form id="predictionForm">
+        <label for="team1">Team 1:</label>
+        <input type="text" id="team1" name="team1"><br>
+
+        <label for="team2">Team 2:</label>
+        <input type="text" id="team2" name="team2"><br>
+
+        <label for="toss_winner">Toss Winner:</label>
+        <input type="text" id="toss_winner" name="toss_winner"><br>
+
+        <label for="decision">Decision (Bat/Field):</label>
+        <input type="text" id="decision" name="decision"><br>
+
+        <label for="winner">Winner:</label>
+        <input type="text" id="winner" name="winner"><br>
+
+        <label for="most_runs">Most Runs:</label>
+        <input type="text" id="most_runs" name="most_runs"><br>
+
+        <label for="most_wkts">Most Wickets:</label>
+        <input type="text" id="most_wkts" name="most_wkts"><br>
+
+        <button type="button" onclick="predict()">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        async function predict() {
+            const data = {
+                team1: document.getElementById('team1').value,
+                team2: document.getElementById('team2').value,
+                toss_winner: document.getElementById('toss_winner').value,
+                decision: document.getElementById('decision').value,
+                winner: document.getElementById('winner').value,
+                most_runs: document.getElementById('most_runs').value,
+                most_wkts: document.getElementById('most_wkts').value
+            };
+
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = `Predicted Man of the Match: ${result.player_of_the_match}`;
+        }
+    </script>
+</body>
+</html>
